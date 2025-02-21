@@ -15,7 +15,8 @@ export default function DineInMenu() {
   };
 
   return (
-    <div className="flex flex-col fixed h-screen">
+    <section className="bg-white rounded-lg shadow-lg p-6">
+    
       {/* <TopBar title="Dine-In Menu" /> */}
       <div className="flex  flex-1 overflow-hidden">
         <LeftPanel
@@ -29,6 +30,8 @@ export default function DineInMenu() {
           />
         )}
       </div>
-    </div>
+    
+  </section>
+    
   );
 }

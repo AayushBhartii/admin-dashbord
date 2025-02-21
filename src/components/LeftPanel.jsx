@@ -5,8 +5,8 @@ import { MdOutlineFiberManualRecord } from "react-icons/md"
 import AddItemForm from "./AddItemForm"
 import PopUp from "./PopUp"
 import MapExistingItem from "./MapExistingItem"
-import CreateComboForm from "./CreateComboForm" // Import the new CreateComboForm component
-import AddSubcategoryForm from "./AddSubcategoryForm" // Add this import
+import CreateComboForm from "./CreateComboForm"
+import AddSubcategoryForm from "./AddSubcategoryForm"
 
 const LeftPanel = ({ categories = [], onProductSelect, dropdownOptions }) => {
   const [openCategories, setOpenCategories] = useState({})
@@ -14,8 +14,8 @@ const LeftPanel = ({ categories = [], onProductSelect, dropdownOptions }) => {
   const [popUpTitle, setPopUpTitle] = useState("")
   const [showAddItemForm, setShowAddItemForm] = useState(false)
   const [showMapExistingItem, setShowMapExistingItem] = useState(false)
-  const [showCreateComboForm, setShowCreateComboForm] = useState(false) // New state for CreateComboForm
-  const [showAddSubcategoryForm, setShowAddSubcategoryForm] = useState(false) // Add this state variable
+  const [showCreateComboForm, setShowCreateComboForm] = useState(false)
+  const [showAddSubcategoryForm, setShowAddSubcategoryForm] = useState(false)
   const navigate = useNavigate()
 
   const toggleCategory = (categoryName) => {
@@ -31,10 +31,9 @@ const LeftPanel = ({ categories = [], onProductSelect, dropdownOptions }) => {
     } else if (action === "Map Existing Item") {
       setShowMapExistingItem(true)
     } else if (action === "Create Combo") {
-      setShowCreateComboForm(true) // Show the CreateComboForm
+      setShowCreateComboForm(true)
     } else if (action === "Add Subcategory") {
-      // Add this condition
-      setShowAddSubcategoryForm(true) // Show the AddSubcategoryForm
+      setShowAddSubcategoryForm(true)
     } else {
       setPopUpTitle(action)
       setIsPopUpOpen(true)
@@ -54,7 +53,6 @@ const LeftPanel = ({ categories = [], onProductSelect, dropdownOptions }) => {
   }
 
   const handleCloseAddSubcategory = () => {
-    // Add this function
     setShowAddSubcategoryForm(false)
   }
 
@@ -64,135 +62,147 @@ const LeftPanel = ({ categories = [], onProductSelect, dropdownOptions }) => {
   }
 
   return (
-    <div className="bg-gray-50 border-r border-gray-200 flex flex-col justify-between     overflow-hidden custom-scrollbar">
-      {/* Menu Listing */}
-      <div className="flex-1 overflow-hidden">
-        <h2 className="text-xl font-semibold mb-6 text-gray-700">Menu Listing</h2>
-        {categories.map((category) => (
-          <div key={category.name} className="mb-4">
-            {/* Category Header */}
-            <div
-              onClick={() => toggleCategory(category.name)}
-              className="flex justify-between items-center cursor-pointer mb-2 py-2 px-3 bg-white rounded-md shadow-sm hover:bg-gray-100 transition-all duration-300 ease-in-out"
-            >
-              <h3 className="font-medium text-gray-700">
-                {category.name} ({category.subCount || 0} sub, {category.itemCount || 0} items)
-              </h3>
-              <FiChevronDown
-                className={`text-gray-500 transition-transform duration-300 ${
-                  openCategories[category.name] ? "rotate-180" : ""
-                }`}
-              />
-            </div>
+    <div className="bg-gray-50 border-r border-gray-200 flex flex-col h-full w-full md:w-80 lg:w-96">
+      {/* Menu Listing Section */}
+      <div className="flex-1 overflow-y-auto px-4 py-6">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl font-semibold text-gray-800">Menu Listing</h2>
+          <button className="text-sm text-blue-600 hover:text-blue-800">
+            View All
+          </button>
+        </div>
 
-            {/* Subcategories */}
-            <div
-              className={`overflow-hidden transition-all duration-500 ease-in-out ${
-                openCategories[category.name] ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-              }`}
-            >
-              {category.subcategories?.map((sub) => (
-                <div key={sub.name} className="ml-4">
-                  <h4 className="text-gray-600 font-medium mb-2">{sub.name}</h4>
-                  {sub.items?.map((item) => (
-                    <div
-                      key={item.id}
-                      onClick={() => onProductSelect(item)}
-                      className="flex justify-between py-1 px-2 hover:bg-gray-100 cursor-pointer rounded-md transition-all duration-200 ease-in-out"
-                    >
-                      <div className="flex items-center gap-2">
-                        <MdOutlineFiberManualRecord
-                          className={
-                            item.type === "Veg"
-                              ? "text-green-500"
-                              : item.type === "Non-Veg"
-                                ? "text-red-500"
-                                : "text-yellow-500"
-                          }
-                        />
-                        <span>{item.name}</span>
-                      </div>
-                      <span className="text-sm">₹{item.pricing}</span>
-                    </div>
-                  ))}
+        {/* Categories */}
+        <div className="space-y-4">
+          {categories.map((category) => (
+            <div key={category.name} className="bg-white rounded-lg shadow-sm">
+              {/* Category Header */}
+              <button
+                onClick={() => toggleCategory(category.name)}
+                className="w-full px-4 py-3 flex items-center justify-between hover:bg-gray-50 transition-colors rounded-t-lg"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="font-medium text-gray-800">{category.name}</span>
+                  <div className="flex items-center gap-2 text-sm text-gray-500">
+                    <span>{category.subCount || 0} sub</span>
+                    <span>•</span>
+                    <span>{category.itemCount || 0} items</span>
+                  </div>
                 </div>
-              ))}
+                <FiChevronDown
+                  className={`w-5 h-5 text-gray-400 transition-transform duration-200 ${
+                    openCategories[category.name] ? "transform rotate-180" : ""
+                  }`}
+                />
+              </button>
+
+              {/* Subcategories */}
+              <div
+                className={`overflow-hidden transition-all duration-300 ${
+                  openCategories[category.name] ? "max-h-[1000px]" : "max-h-0"
+                }`}
+              >
+                {category.subcategories?.map((subcategory) => (
+                  <div
+                    key={subcategory.name}
+                    className="border-t border-gray-100 px-4 py-3"
+                  >
+                    <h4 className="font-medium text-gray-700 mb-2">
+                      {subcategory.name}
+                    </h4>
+                    <div className="space-y-2">
+                      {subcategory.items?.map((item) => (
+                        <button
+                          key={item.id}
+                          onClick={() => onProductSelect(item)}
+                          className="w-full flex items-center justify-between px-3 py-2 hover:bg-gray-50 rounded-md transition-colors"
+                        >
+                          <div className="flex items-center gap-2">
+                            <MdOutlineFiberManualRecord
+                              className={`w-4 h-4 ${
+                                item.type === "Veg"
+                                  ? "text-green-500"
+                                  : item.type === "Non-Veg"
+                                  ? "text-red-500"
+                                  : "text-yellow-500"
+                              }`}
+                            />
+                            <span className="text-gray-700 text-sm">
+                              {item.name}
+                            </span>
+                          </div>
+                          <span className="text-sm font-medium text-gray-600">
+                            ₹{item.pricing}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
-      {/* Bottom Action Section */}
-      <div className="pt-4 border-t border-gray-200">
-        <div className="grid mb-28 grid-cols-2 gap-2">
-          {/* Add Item */}
+      {/* Action Buttons */}
+      <div className="border-t border-gray-200 p-4 bg-white">
+        <div className="grid grid-cols-2 gap-3">
           <button
             onClick={() => handleActionClick("Add Item")}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-md hover:bg-gray-200 transition-all"
+            className="flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
           >
-            <FiFolderPlus className="text-black" />
-            Add Item
+            <FiFolderPlus className="w-5 h-5" />
+            <span className="text-sm font-medium">Add Item</span>
           </button>
-
-          {/* Map Existing Item */}
           <button
             onClick={() => handleActionClick("Map Existing Item")}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-md hover:bg-gray-200 transition-all"
+            className="flex items-center justify-center gap-2 px-4 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
           >
-            <FiLink className="text-green-500" />
-            <span className="text-gray-700 text-sm font-medium">Add Existing Item</span>
+            <FiLink className="w-5 h-5" />
+            <span className="text-sm font-medium">Map Item</span>
           </button>
-
-          {/* Create Combo */}
           <button
             onClick={() => handleActionClick("Create Combo")}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-md hover:bg-gray-200 transition-all"
+            className="flex items-center justify-center gap-2 px-4 py-2.5 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors"
           >
-            <FiLayers className="text-yellow-500" />
-            <span className="text-gray-700 text-sm font-medium">Create Combo</span>
+            <FiLayers className="w-5 h-5" />
+            <span className="text-sm font-medium">Create Combo</span>
           </button>
-
-          {/* Add Subcategory */}
           <button
             onClick={() => handleActionClick("Add Subcategory")}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-md hover:bg-gray-200 transition-all"
+            className="flex items-center justify-center gap-2 px-4 py-2.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
           >
-            <FiFolderPlus className="text-purple-500" />
-            <span className="text-gray-700 text-sm font-medium">Add Subcategory</span>
+            <FiFolderPlus className="w-5 h-5" />
+            <span className="text-sm font-medium">Add Subcategory</span>
           </button>
         </div>
       </div>
 
-      {/* Add Item Form */}
+      {/* Modals */}
       {showAddItemForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <AddItemForm isOpen={showAddItemForm} onClose={handleCloseAddItem} dropdownOptions={dropdownOptions} />
-        </div>
+        <AddItemForm
+          isOpen={showAddItemForm}
+          onClose={handleCloseAddItem}
+          dropdownOptions={dropdownOptions}
+        />
       )}
-
-      {/* Map Existing Item */}
       {showMapExistingItem && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <MapExistingItem onClose={handleCloseMapExistingItem} />
-        </div>
+        <MapExistingItem onClose={handleCloseMapExistingItem} />
       )}
-
-      {/* Create Combo Form */}
       {showCreateComboForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <CreateComboForm isOpen={showCreateComboForm} onClose={handleCloseCreateCombo} categories={categories} />
-        </div>
+        <CreateComboForm
+          isOpen={showCreateComboForm}
+          onClose={handleCloseCreateCombo}
+          categories={categories}
+        />
       )}
-
-      {/* Add Subcategory Form */}
-      {showAddSubcategoryForm && ( // Add this conditional rendering
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <AddSubcategoryForm
-            isOpen={showAddSubcategoryForm}
-            onClose={handleCloseAddSubcategory}
-            categories={categories}
-          />
-        </div>
+      {showAddSubcategoryForm && (
+        <AddSubcategoryForm
+          isOpen={showAddSubcategoryForm}
+          onClose={handleCloseAddSubcategory}
+          categories={categories}
+        />
       )}
 
       {/* Pop-Up for other actions */}

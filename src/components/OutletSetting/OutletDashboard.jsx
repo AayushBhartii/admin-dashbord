@@ -12,6 +12,7 @@ import EditOutletModal from "./EditOutletModal";
 import OutletFilterModal from "./OutletFilterModal";
 // import { OperatingHoursSection } from "../ManageSettingComponets/OperatingHoursSection";
 import { OperatingHoursSection } from "./OperatingHoursSection";
+import { FaInstagram, FaFacebook, FaTwitter, FaGlobe } from 'react-icons/fa';
 
 const OutletDashboard = ({ setSelectedOutlet }) => {
   const [activeTab, setActiveTab] = useState("Outlet Management");
@@ -45,6 +46,22 @@ const OutletDashboard = ({ setSelectedOutlet }) => {
     status: "",
   });
 
+  const [socialLinks, setSocialLinks] = useState({
+    instagram: "",
+    facebook: "",
+    twitter: "",
+    website: "",
+    youtube: "",
+    linkedin: ""
+  });
+
+  const [restaurantDetails, setRestaurantDetails] = useState({
+    cuisines: [],
+    features: [],
+    paymentMethods: [],
+    deliveryAreas: ['Coastal Region', 'Harbor Area'] // Default areas
+  });
+
   const handleAddOutlet = (newOutlet) => {
     setOutlets([...outlets, { ...newOutlet, id: outlets.length + 1 }]);
     setIsAddModalOpen(false);
@@ -71,6 +88,13 @@ const OutletDashboard = ({ setSelectedOutlet }) => {
   );
 
   const tabs = ["Outlet Management", "Operating Hours", "Additional Settings"];
+
+  const handleSocialLinkChange = (platform, value) => {
+    setSocialLinks(prev => ({
+      ...prev,
+      [platform]: value
+    }));
+  };
 
   return (
     <div className="flex justify-center min-h-screen bg-gray-100">
@@ -178,14 +202,87 @@ const OutletDashboard = ({ setSelectedOutlet }) => {
 
           {activeTab === "Additional Settings" && (
             <div className="p-4 text-gray-700">
-              <h2 className="text-2xl font-semibold mb-4">
-                Additional Settings
-              </h2>
-              <p>Configure additional settings for outlets here.</p>
+              <div className="space-y-6">
+                {/* Social Media Section */}
+                <div className="bg-white p-6 rounded-lg shadow-sm border">
+                  <h3 className="text-lg font-semibold mb-4 text-gray-800">Social Media Links</h3>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* Instagram Input */}
+                    <div className="flex items-center space-x-3 p-3 border rounded-lg">
+                      <FaInstagram className="w-8 h-8 text-pink-600" />
+                      <div className="flex-1">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Instagram Profile</label>
+                        <input
+                          type="url"
+                          value={socialLinks.instagram}
+                          onChange={(e) => handleSocialLinkChange('instagram', e.target.value)}
+                          placeholder="https://instagram.com/your-profile"
+                          className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Facebook Input */}
+                    <div className="flex items-center space-x-3 p-3 border rounded-lg">
+                      <FaFacebook className="w-8 h-8 text-blue-600" />
+                      <div className="flex-1">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Facebook Page</label>
+                        <input
+                          type="url"
+                          value={socialLinks.facebook}
+                          onChange={(e) => handleSocialLinkChange('facebook', e.target.value)}
+                          placeholder="https://facebook.com/your-page"
+                          className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Twitter Input */}
+                    <div className="flex items-center space-x-3 p-3 border rounded-lg">
+                      <FaTwitter className="w-8 h-8 text-blue-400" />
+                      <div className="flex-1">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Twitter Profile</label>
+                        <input
+                          type="url"
+                          value={socialLinks.twitter}
+                          onChange={(e) => handleSocialLinkChange('twitter', e.target.value)}
+                          placeholder="https://twitter.com/your-handle"
+                          className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Website Input */}
+                    <div className="flex items-center space-x-3 p-3 border rounded-lg">
+                      <FaGlobe className="w-8 h-8 text-gray-600" />
+                      <div className="flex-1">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Website</label>
+                        <input
+                          type="url"
+                          value={socialLinks.website}
+                          onChange={(e) => handleSocialLinkChange('website', e.target.value)}
+                          placeholder="https://your-website.com"
+                          className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Save Button */}
+                  <button 
+                    onClick={() => {
+                      // Here you would typically save to your backend
+                      console.log('Saving social links:', socialLinks);
+                    }}
+                    className="mt-6 w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition-colors"
+                  >
+                    Save Social Media Links
+                  </button>
+                </div>
+              </div>
             </div>
           )}
-
-          
         </div>
 
         {/* Modals */}

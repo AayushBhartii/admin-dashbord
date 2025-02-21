@@ -17,9 +17,11 @@ import { outletData } from "../data/dummy"; // Update the path as necessary  // 
 export default function Sidebar() {
   const [expanded, setExpanded] = useState(true);
   const navigate = useNavigate();
+  
+
   // Main container: dark gray background, white text, smooth width transitions
   const sidebarClasses = `
-    ${expanded ? "w-64" : "w-20"}
+    ${expanded ? "w-64" : "w-16"}
     flex flex-col
     border-r border-gray-800
     bg-gray-900
@@ -27,14 +29,14 @@ export default function Sidebar() {
     transition-all duration-300 ease-in-out overflow-hidden
   `;
 
-  // Top bar behind the “zomato” text: red accent
+  // Top bar behind the "zomato" text: red accent
   const topBarClasses = `
     w-full py-4 px-4
     bg-red-600
     flex flex-col items-start
   `;
 
-  // “Restaurant dashboard” line fade/slide
+  // "Restaurant dashboard" line fade/slide
   const restaurantDashClasses = `
     transition-all duration-300 ease-in-out overflow-hidden
     ${expanded ? "max-h-10 mt-1 opacity-100" : "max-h-0 mt-0 opacity-0"}
@@ -57,8 +59,12 @@ export default function Sidebar() {
           `
         }
       >
-        <div className="flex items-center gap-2 px-3 py-2">
-          <Icon size={20} className="flex-shrink-0" />
+        <div className={`
+          flex items-center
+          ${expanded ? 'gap-2 px-3 py-2' : 'justify-center py-2'}
+          transition-all duration-300
+        `}>
+          <Icon size={expanded ? 20 : 22} className="flex-shrink-0" />
           <span
             className={`
               whitespace-nowrap
@@ -126,17 +132,30 @@ export default function Sidebar() {
       </nav>
 
       {/* Bottom outlet info (slide/fade) */}
-      <div className="p-4 bg-gray-800">
-        <div>
+      <div className={`p-4 bg-gray-800 ${!expanded && 'flex justify-center'}`}>
+        <div className={`
+          transition-all duration-300 ease-in-out
+          ${expanded ? 'opacity-100' : 'opacity-0 h-0 overflow-hidden w-0'}
+        `}>
           <div className="font-semibold">{outletData.name || "Loading..."}</div>
           <div>{outletData.resId ? `RES ID : ${outletData.resId}` : ""}</div>
           <div>{outletData.address}</div>
         </div>
         <button
-          className="mt-3 w-full px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors duration-200"
+          className={`
+            mt-3 bg-red-600 text-white rounded 
+            hover:bg-red-700 transition-colors duration-200
+            ${expanded ? 'w-full px-4 py-2' : 'w-20 h-11 p-3'}
+            flex items-center justify-center
+            ${!expanded && 'mt-0'}
+          `}
           onClick={() => navigate("/outlet-settings")}
         >
-          Outlet Management
+          {expanded ? (
+            "Outlet Management"
+          ) : (
+            <HiOutlineCog size={20} className="m-auto" />
+          )}
         </button>
       </div>
     </div>
