@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { outletData } from "../data/dummy"; // Update the path as necessary
 import {
   HiOutlineSearch,
@@ -8,20 +9,12 @@ import {
 
 export default function TopNav() {
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
-  const [showNotificationsDropdown, setShowNotificationsDropdown] =
-    useState(false);
   const profileRef = useRef(null);
-  const notificationRef = useRef(null);
+  const navigate = useNavigate();
 
   const handleClickOutside = (event) => {
     if (profileRef.current && !profileRef.current.contains(event.target)) {
       setShowProfileDropdown(false);
-    }
-    if (
-      notificationRef.current &&
-      !notificationRef.current.contains(event.target)
-    ) {
-      setShowNotificationsDropdown(false);
     }
   };
 
@@ -44,19 +37,12 @@ export default function TopNav() {
       </div>
 
       <div className="flex items-center gap-4">
-        <div ref={notificationRef} className="relative">
+        <div className="relative">
           <HiOutlineBell
             size={24}
             className="cursor-pointer hover:text-blue-500"
-            onClick={() =>
-              setShowNotificationsDropdown(!showNotificationsDropdown)
-            }
+            onClick={() => navigate('/notifications')}
           />
-          {showNotificationsDropdown && (
-            <div className="absolute right-0 w-48 p-2 mt-2 bg-white text-gray-800 border border-gray-200 shadow-lg rounded-lg">
-              <p>No new notifications</p>
-            </div>
-          )}
         </div>
 
         <div ref={profileRef} className="relative">

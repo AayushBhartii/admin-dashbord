@@ -125,7 +125,7 @@ export default function Sidebar() {
           </li>
 
           <li>
-            {navItem("/outlet-info", HiOutlineInformationCircle, "Outlet info")}
+            {navItem("/outlet-info", HiOutlineInformationCircle, "Operational information")}
           </li>
           <li>{navItem("/help", HiOutlineQuestionMarkCircle, "Help")}</li>
         </ul>

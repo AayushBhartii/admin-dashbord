@@ -16,6 +16,7 @@ import TaxesAndCharges from "./components/TaxesAndCharges/TaxAndCharges";
 import ManageTiffinSeeting from "./pages/ManageTiffinSeeting";
 import OutletDashboard from "./components/OutletSetting/OutletDashboard";
 import OrderManag from "./components/OrderManage/OrderManag";
+import Notifications from './pages/Notifications';
 
 
 
@@ -36,6 +37,7 @@ export default function App() {
    
         
         <Route path="/OrderManag" element={<OrderManag />} />
+        <Route path="/notifications" element={<Notifications />} />
         {/* If you need more pages, add them here */}
       </Route>
     </Routes>
