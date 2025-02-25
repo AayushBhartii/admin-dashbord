@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import DiningOrders from "./DiningOrders";
 import TakeawayOrders from "./TakeawayOrders";
 import OrderHistory from "./OrderHistory";
 
 const OrderManag = () => {
-  const [activeTab, setActiveTab] = useState("dining");
+  const location = useLocation();
+  const defaultTab = location.state?.defaultTab || "dining";
+  const [activeTab, setActiveTab] = useState(defaultTab);
   const [orders, setOrders] = useState({
     dining: [
       {
@@ -63,7 +66,6 @@ const OrderManag = () => {
     ],
   });
 
-
   const [orderHistory, setOrderHistory] = useState([]);
 
   const updateOrderStatus = (orderId) => {
@@ -95,16 +97,22 @@ const OrderManag = () => {
     });
   };
 
+  useEffect(() => {
+    if (location.state?.defaultTab) {
+      setActiveTab(location.state.defaultTab);
+    }
+  }, [location.state]);
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header and Tabs */}
       <div className="border-b bg-white">
         <div className="max-w-7xl mx-auto">
-          <div className="flex gap-20  px-6 py-4">
+          <div className="flex gap-20 px-6 py-4">
             <h1 className="text-2xl font-bold text-gray-900">
               Order Management
             </h1>
-            <div className="flex gap-20 bg-red-200">
+            <div className="flex gap-20">
               <button
                 className={`px-8 py-3 font-medium bg-red-500 rounded ${
                   activeTab === "dining"
@@ -139,21 +147,6 @@ const OrderManag = () => {
           </div>
         </div>
       </div>
-
-      {/* Content */}
-      {/* <div className="max-w-7xl mx-auto">
-        {activeTab === "dining" ? (
-          <DiningOrders
-            orders={orders.dining}
-            onUpdateStatus={updateOrderStatus}
-          />
-        ) : (
-          <TakeawayOrders
-            orders={orders.takeaway}
-            onUpdateStatus={updateOrderStatus}
-          />
-        )}
-      </div> */}
 
       {/* Content */}
       <div className="max-w-7xl mx-auto px-6 py-6">

@@ -1,7 +1,28 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Notifications = () => {
-  const [activeTab, setActiveTab] = useState('admin');
+  const [activeTab, setActiveTab] = useState('dineIn');
+  const navigate = useNavigate();
+
+  const handleViewMore = () => {
+    switch (activeTab) {
+      case 'dineIn':
+        navigate('/OrderManag', { state: { defaultTab: 'dining' } });
+        break;
+      case 'takeaway':
+        navigate('/OrderManag', { state: { defaultTab: 'takeaway' } });
+        break;
+      case 'reviews':
+        navigate('/OrderManag', );
+        break;
+      case 'admin':
+        navigate('/OrderManag');
+        break;
+      default:
+        navigate('/OrderManag');
+    }
+  };
 
   const notifications = {
     admin: [
@@ -93,10 +114,10 @@ const Notifications = () => {
   };
 
   const tabs = [
-    { id: 'admin', label: 'Admin' },
+    { id: 'dineIn', label: 'Dine-In' },
     { id: 'takeaway', label: 'Takeaway' },
     { id: 'reviews', label: 'Reviews' },
-    { id: 'dineIn', label: 'Dine-In' },
+    { id: 'admin', label: 'Admin' },
   ];
 
   return (
@@ -161,6 +182,17 @@ const Notifications = () => {
           </div>
         ))}
         
+        {notifications[activeTab]?.length > 0 && (
+          <div className="flex justify-center mt-6">
+            <button
+              onClick={handleViewMore}
+              className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+            >
+              View More
+            </button>
+          </div>
+        )}
+
         {notifications[activeTab]?.length === 0 && (
           <div className="text-center text-gray-500 py-8">
             No notifications in this category
