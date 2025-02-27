@@ -98,10 +98,8 @@ const OrderManag = () => {
   };
 
   useEffect(() => {
-    if (location.state?.defaultTab) {
-      setActiveTab(location.state.defaultTab);
-    }
-  }, [location.state]);
+    setActiveTab(defaultTab);
+  }, [defaultTab]);
 
   return (
     <div className="min-h-screen bg-gray-50">

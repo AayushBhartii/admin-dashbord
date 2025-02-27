@@ -4,27 +4,7 @@ import { useNavigate } from 'react-router-dom';
 const Notifications = () => {
   const [activeTab, setActiveTab] = useState('dineIn');
   const navigate = useNavigate();
-
-  const handleViewMore = () => {
-    switch (activeTab) {
-      case 'dineIn':
-        navigate('/OrderManag', { state: { defaultTab: 'dining' } });
-        break;
-      case 'takeaway':
-        navigate('/OrderManag', { state: { defaultTab: 'takeaway' } });
-        break;
-      case 'reviews':
-        navigate('/OrderManag', );
-        break;
-      case 'admin':
-        navigate('/OrderManag');
-        break;
-      default:
-        navigate('/OrderManag');
-    }
-  };
-
-  const notifications = {
+  const [notifications, setNotifications] = useState({
     admin: [
       {
         id: 1,
@@ -100,6 +80,34 @@ const Notifications = () => {
         status: "completed"
       },
     ],
+  });
+
+  const handleViewMore = () => {
+    switch (activeTab) {
+      case 'dineIn':
+        navigate('/OrderManag', { state: { defaultTab: 'dining' } });
+        break;
+      case 'takeaway':
+        navigate('/OrderManag', { state: { defaultTab: 'takeaway' } });
+        break;
+      case 'reviews':
+        navigate('/OrderManag', { state: { defaultTab: 'history' } });
+        break;
+      case 'admin':
+        navigate('/OrderManag');
+        break;
+      default:
+        navigate('/OrderManag');
+    }
+  };
+
+  const handleClearAll = () => {
+    setNotifications({
+      admin: [],
+      takeaway: [],
+      reviews: [],
+      dineIn: []
+    });
   };
 
   const getStatusColor = (status) => {
@@ -122,7 +130,15 @@ const Notifications = () => {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-semibold mb-6">Notifications</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-semibold">Notifications</h1>
+        <button
+          onClick={handleClearAll}
+          className="px-4 py-2 text-sm text-red-600 border border-red-600 rounded-lg hover:bg-red-50 transition-colors"
+        >
+          Clear All
+        </button>
+      </div>
       
       {/* Tabs */}
       <div className="flex space-x-4 mb-6 border-b">
@@ -137,6 +153,11 @@ const Notifications = () => {
             onClick={() => setActiveTab(tab.id)}
           >
             {tab.label}
+            {notifications[tab.id]?.length > 0 && (
+              <span className="ml-2 px-2 py-0.5 text-xs bg-red-500 text-white rounded-full">
+                {notifications[tab.id].length}
+              </span>
+            )}
           </button>
         ))}
       </div>
